@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <Company>valnoxy</Company>
+    <Authors>valnoxy</Authors>
+    <Copyright>Copyright (c) 2018 - 2022 valnoxy.</Copyright>
+  </PropertyGroup>
+
+</Project>
