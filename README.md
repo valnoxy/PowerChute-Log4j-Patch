@@ -17,7 +17,7 @@
 ![-----------------------------------------------------](https://dl.exploitox.de/t440p-oc/rainbow.png)
 
 ## 🔔 Information
-This little tool will remove the JndiLookup class from the log4j jar file in APC PowerChute Business Edition.
+This little tool will remove the JndiLookup & JndiManager class from the log4j jar file in APC PowerChute Business Edition.
 
 PowerChute will be stopped while patching it.
 
