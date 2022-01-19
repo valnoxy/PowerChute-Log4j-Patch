@@ -4,9 +4,23 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
-    <Company>valnoxy</Company>
+    <Company>Exploitox</Company>
     <Authors>valnoxy</Authors>
-    <Copyright>Copyright (c) 2018 - 2022 valnoxy.</Copyright>
+    <Copyright>Copyright (c) 2018 - 2022 valnoxy. All rightes reserved.</Copyright>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>bucker_icon.ico</ApplicationIcon>
+    <DebugType>none</DebugType>
+    <PackageProjectUrl>https://github.com/valnoxy/PowerChute-Log4j-Patch</PackageProjectUrl>
+    <Product>bucker</Product>
+	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="bucker_icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="6.0.0" />
+  </ItemGroup>
 
 </Project>
