@@ -5,7 +5,7 @@
     <strong>Version: </strong>1.0.0
     <br />
     <br />
-    <a><strong>No downloads available yet</strong></a>
+   <a href="https://github.com/valnoxy/PowerChute-Log4j-Patch/releases"><strong>Download now »</strong></a>
     <br />
     <br />
     <a href="https://github.com/valnoxy/PowerChute-Log4j-Patch/issues">Report Bug</a>
