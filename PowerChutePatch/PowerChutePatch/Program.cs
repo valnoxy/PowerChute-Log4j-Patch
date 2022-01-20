@@ -113,20 +113,34 @@ namespace PowerChutePatch
 
         static void RemoveClass(string file)
         {
-            using (ZipArchive zip = ZipFile.Open(@file, ZipArchiveMode.Update))
+            try
             {
-                zip.Entries.Where(x => x.FullName.Contains("JndiManager.class")).ToList()
-                    .ForEach(y =>
-                    {
-                        zip.GetEntry(y.FullName).Delete();
-                        Console.WriteLine("[i] Removing: JndiManager.class");
-                    });
-                zip.Entries.Where(x => x.FullName.Contains("JndiLookup.class")).ToList()
-                    .ForEach(y =>
-                    {
-                        zip.GetEntry(y.FullName).Delete();
-                        Console.WriteLine("[i] Removing: JndiLookup.class");
-                    });
+                using (ZipArchive zip = ZipFile.Open(@file, ZipArchiveMode.Update))
+                {
+                    zip.Entries.Where(x => x.FullName.Contains("JndiManager.class")).ToList()
+                        .ForEach(y =>
+                        {
+                            zip.GetEntry(y.FullName).Delete();
+                            Console.WriteLine("[i] Removing: JndiManager.class");
+                        });
+                    zip.Entries.Where(x => x.FullName.Contains("JndiLookup.class")).ToList()
+                        .ForEach(y =>
+                        {
+                            zip.GetEntry(y.FullName).Delete();
+                            Console.WriteLine("[i] Removing: JndiLookup.class");
+                        });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("[!] An error has occurred while updating the file:\n\n" + ex);
+
+                Console.WriteLine("[!] Restart service ...");
+                RunService(true);
+
+                Console.WriteLine("[!] Terminating in 10 sec ..." + ex);
+                System.Threading.Thread.Sleep(10000);
+                Environment.Exit(-1);
             }
             Console.WriteLine($"[i] File {file} successfully updated.");
         }
