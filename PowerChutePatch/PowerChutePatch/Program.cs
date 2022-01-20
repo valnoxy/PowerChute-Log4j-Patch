@@ -12,7 +12,7 @@ namespace PowerChutePatch
 
         static void Main(string[] args)
         {
-            Console.WriteLine("[i] Log4j Patcher for PowerChute [Version: 1.0]");
+            Console.WriteLine("[i] Log4j Patcher for PowerChute [Version: 1.0.1]");
             Console.WriteLine("[i] by valnoxy (https://valnoxy.dev)");
             Console.WriteLine("\n[i] This tool is open source! See: https://github.com/valnoxy/PowerChute-Log4j-Patch");
 
@@ -26,6 +26,19 @@ namespace PowerChutePatch
                 log4j = "log4j-core-2.11.1.jar";
             if (File.Exists(Path.Combine(path, "log4j-core-2.2.jar")))
                 log4j = "log4j-core-2.2.jar";
+
+            if (String.IsNullOrEmpty(log4j))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("[!] This Version of PowerChute is too old. Please update it before using this patch.");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("[!] Restart service ...");
+                RunService(true);
+                
+                Console.WriteLine("[!] Terminating in 10 sec ...");
+                System.Threading.Thread.Sleep(10000);
+                Environment.Exit(-1);
+            }
 
             Console.WriteLine("[i] Removing vulnerable classes from jar file ...");
             RemoveClass(Path.Combine(path, log4j));
@@ -133,12 +146,13 @@ namespace PowerChutePatch
             }
             catch (Exception ex)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("[!] An error has occurred while updating the file:\n\n" + ex);
-
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("[!] Restart service ...");
                 RunService(true);
 
-                Console.WriteLine("[!] Terminating in 10 sec ..." + ex);
+                Console.WriteLine("[!] Terminating in 10 sec ...");
                 System.Threading.Thread.Sleep(10000);
                 Environment.Exit(-1);
             }
