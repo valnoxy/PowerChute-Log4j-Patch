@@ -8,24 +8,39 @@ namespace PowerChutePatch
 {
     internal class Program
     {
-        public static string path = "C:\\Program Files (x86)\\APC\\PowerChute Business Edition\\agent\\lib";
+        public static string business_path = "C:\\Program Files (x86)\\APC\\PowerChute Business Edition\\agent\\lib";
+        public static string network_path = "C:\\Program Files\\APC\\PowerChute\\group1\\lib";
 
         static void Main(string[] args)
         {
-            Console.WriteLine("[i] Log4j Patcher for PowerChute [Version: 1.0.1]");
+            Console.WriteLine("[i] Log4j Patcher for PowerChute [Version: 1.1.0]");
             Console.WriteLine("[i] by valnoxy (https://valnoxy.dev)");
             Console.WriteLine("\n[i] This tool is open source! See: https://github.com/valnoxy/PowerChute-Log4j-Patch");
 
-            CheckSys();
-            RunService(false);
+            string service = CheckSys();
+
+            RunService(service, false);
 
             string log4j = String.Empty;
-            if (File.Exists(Path.Combine(path, "log4j-core-2.14.1.jar")))
-                log4j = "log4j-core-2.14.1.jar";
-            if (File.Exists(Path.Combine(path, "log4j-core-2.11.1.jar")))
-                log4j = "log4j-core-2.11.1.jar";
-            if (File.Exists(Path.Combine(path, "log4j-core-2.2.jar")))
-                log4j = "log4j-core-2.2.jar";
+            if (service == "pcns1")
+            {
+                if (File.Exists(Path.Combine(network_path, "log4j-core-2.13.3.jar")))
+                    log4j = "log4j-core-2.13.3.jar";
+                if (File.Exists(Path.Combine(network_path, "log4j-core-2.10.0.jar")))
+                    log4j = "log4j-core-2.10.0.jar";
+                if (File.Exists(Path.Combine(network_path, "log4j-core-2.2.jar")))
+                    log4j = "log4j-core-2.2.jar";
+            }
+
+            if (service == "apcpbeagent")
+            {
+                if (File.Exists(Path.Combine(business_path, "log4j-core-2.14.1.jar")))
+                    log4j = "log4j-core-2.14.1.jar";
+                if (File.Exists(Path.Combine(business_path, "log4j-core-2.11.1.jar")))
+                    log4j = "log4j-core-2.11.1.jar";
+                if (File.Exists(Path.Combine(business_path, "log4j-core-2.2.jar")))
+                    log4j = "log4j-core-2.2.jar";
+            }
 
             if (String.IsNullOrEmpty(log4j))
             {
@@ -33,7 +48,7 @@ namespace PowerChutePatch
                 Console.WriteLine("[!] This Version of PowerChute is too old. Please update it before using this patch.");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("[!] Restart service ...");
-                RunService(true);
+                RunService(service, true);
                 
                 Console.WriteLine("[!] Terminating in 10 sec ...");
                 System.Threading.Thread.Sleep(10000);
@@ -41,36 +56,46 @@ namespace PowerChutePatch
             }
 
             Console.WriteLine("[i] Removing vulnerable classes from jar file ...");
-            RemoveClass(Path.Combine(path, log4j));
-            RunService(true);
+            if (service == "pcns1")
+                RemoveClass(service, Path.Combine(network_path, log4j));
+            if (service == "apcpbeagent")
+                RemoveClass(service, Path.Combine(business_path, log4j));
+            RunService(service, true);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("[i] PowerChute was successfully patched! Closing ...");
             Console.ForegroundColor = ConsoleColor.White;
             System.Threading.Thread.Sleep(5000);
         }
 
-        static void CheckSys()
+        static string CheckSys()
         {
             Console.WriteLine("[i] Searching for APC PowerChute Business Edition ...");
-            if (!Directory.Exists(path))
+            if (Directory.Exists(business_path))
             {
-                Console.WriteLine("[!] Error: Cannot find PowerChute Business Edition.");
-                Console.WriteLine("[!] Provided path: " + path);
-                System.Threading.Thread.Sleep(5000);
-                Environment.Exit(-1);
+                Console.WriteLine("[i] PowerChute Business Edition found!");
+                return "apcpbeagent";
+            }
+            if (Directory.Exists(network_path))
+            {
+                Console.WriteLine("[i] PowerChute Network Shutdown found!");
+                return "pcns1";
             }
             else
             {
-                Console.WriteLine("[i] PowerChute Business Edition found!");
+                Console.WriteLine("[!] Error: Cannot find PowerChute Business Edition.");
+                Console.WriteLine("[!] Provided path: " + business_path);
+                System.Threading.Thread.Sleep(5000);
+                Environment.Exit(-1);
+                return "";
             }
         }
 
-        private static void RunService(bool v)
+        private static void RunService(string servicename, bool v)
         {
             // Check whether the apcpbeagent service is started.
             ServiceController sc = new ServiceController();
-            sc.ServiceName = "apcpbeagent";
-            Console.WriteLine("[i] The apcpbeagent service status is currently set to {0}",
+            sc.ServiceName = servicename;
+            Console.WriteLine($"[i] The {servicename} service status is currently set to {0}",
                                sc.Status.ToString());
 
             if (v == true)
@@ -78,7 +103,7 @@ namespace PowerChutePatch
                 if (sc.Status != ServiceControllerStatus.Running)
                 {
                     // Start the service if the current status is stopped.
-                    Console.WriteLine("[i] Starting the apcpbeagent service ...");
+                    Console.WriteLine($"[i] Starting the {servicename} service ...");
                     try
                     {
                         // Start the service, and wait until its status is "Running".
@@ -86,12 +111,12 @@ namespace PowerChutePatch
                         sc.WaitForStatus(ServiceControllerStatus.Running);
 
                         // Display the current service status.
-                        Console.WriteLine("[i] The apcpbeagent service status is now set to {0}.",
+                        Console.WriteLine($"[i] The {servicename} service status is now set to {0}.",
                                            sc.Status.ToString());
                     }
                     catch (InvalidOperationException)
                     {
-                        Console.WriteLine("[!] Could not start the apcpbeagent service.");
+                        Console.WriteLine($"[!] Could not start the {servicename} service.");
                         System.Threading.Thread.Sleep(5000);
                         Environment.Exit(-1);
                     }
@@ -124,7 +149,7 @@ namespace PowerChutePatch
             }
         }
 
-        static void RemoveClass(string file)
+        static void RemoveClass(string servicename, string file)
         {
             try
             {
@@ -150,7 +175,7 @@ namespace PowerChutePatch
                 Console.WriteLine("[!] An error has occurred while updating the file:\n\n" + ex);
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("[!] Restart service ...");
-                RunService(true);
+                RunService(servicename, true);
 
                 Console.WriteLine("[!] Terminating in 10 sec ...");
                 System.Threading.Thread.Sleep(10000);

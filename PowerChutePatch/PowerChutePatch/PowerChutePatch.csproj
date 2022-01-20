@@ -13,7 +13,7 @@
     <PackageProjectUrl>https://github.com/valnoxy/PowerChute-Log4j-Patch</PackageProjectUrl>
     <Product>bucker</Product>
 	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-	<Version>1.0.1</Version>
+	<Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
