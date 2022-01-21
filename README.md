@@ -1,6 +1,6 @@
 <h3 align="center">PowerChute Log4j Patch</h3>
 <p align="center">
-    Tool for patching APC PowerChute Business Edition.
+    Tool for patching APC PowerChute Business Edition and Network Shutdown.
     <br />
     <strong>Version: </strong>1.1.0
     <br />
