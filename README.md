@@ -2,7 +2,7 @@
 <p align="center">
     Tool for patching APC PowerChute Business Edition.
     <br />
-    <strong>Version: </strong>1.0.0
+    <strong>Version: </strong>1.1.0
     <br />
     <br />
    <a href="https://github.com/valnoxy/PowerChute-Log4j-Patch/releases"><strong>Download now »</strong></a>
