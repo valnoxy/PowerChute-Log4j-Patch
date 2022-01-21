@@ -82,8 +82,7 @@ namespace PowerChutePatch
             }
             else
             {
-                Console.WriteLine("[!] Error: Cannot find PowerChute Business Edition.");
-                Console.WriteLine("[!] Provided path: " + business_path);
+                Console.WriteLine("[!] Error: Cannot find PowerChute Business Edition or Network Shutdown.");
                 System.Threading.Thread.Sleep(5000);
                 Environment.Exit(-1);
                 return "";
@@ -95,8 +94,7 @@ namespace PowerChutePatch
             // Check whether the apcpbeagent service is started.
             ServiceController sc = new ServiceController();
             sc.ServiceName = servicename;
-            Console.WriteLine($"[i] The {servicename} service status is currently set to {0}",
-                               sc.Status.ToString());
+            Console.WriteLine($"[i] The {servicename} service status is currently set to {sc.Status}");
 
             if (v == true)
             {
@@ -111,8 +109,7 @@ namespace PowerChutePatch
                         sc.WaitForStatus(ServiceControllerStatus.Running);
 
                         // Display the current service status.
-                        Console.WriteLine($"[i] The {servicename} service status is now set to {0}.",
-                                           sc.Status.ToString());
+                        Console.WriteLine($"[i] The {servicename} service status is now set to {sc.Status}.");
                     }
                     catch (InvalidOperationException)
                     {
@@ -136,8 +133,7 @@ namespace PowerChutePatch
                         sc.WaitForStatus(ServiceControllerStatus.Stopped);
 
                         // Display the current service status.
-                        Console.WriteLine("[i] The apcpbeagent service status is now set to {0}.",
-                                           sc.Status.ToString());
+                        Console.WriteLine($"[i] The apcpbeagent service status is now set to {sc.Status}.");
                     }
                     catch (InvalidOperationException)
                     {
