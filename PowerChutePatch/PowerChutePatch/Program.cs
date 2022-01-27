@@ -91,7 +91,7 @@ namespace PowerChutePatch
 
         private static void RunService(string servicename, bool v)
         {
-            // Check whether the apcpbeagent service is started.
+            // Check whether the service is started.
             ServiceController sc = new ServiceController();
             sc.ServiceName = servicename;
             Console.WriteLine($"[i] The {servicename} service status is currently set to {sc.Status}");
@@ -125,7 +125,7 @@ namespace PowerChutePatch
                 if (sc.Status != ServiceControllerStatus.Stopped)
                 {
                     // Stop the service if the current status is started.
-                    Console.WriteLine("[i] Stopping the apcpbeagent service ...");
+                    Console.WriteLine($"[i] Stopping the {servicename} service ...");
                     try
                     {
                         // Stop the service, and wait until its status is "Stopped".
@@ -133,11 +133,11 @@ namespace PowerChutePatch
                         sc.WaitForStatus(ServiceControllerStatus.Stopped);
 
                         // Display the current service status.
-                        Console.WriteLine($"[i] The apcpbeagent service status is now set to {sc.Status}.");
+                        Console.WriteLine($"[i] The {servicename} service status is now set to {sc.Status}.");
                     }
                     catch (InvalidOperationException)
                     {
-                        Console.WriteLine("[!] Could not stop the apcpbeagent service.");
+                        Console.WriteLine($"[!] Could not stop the {servicename} service.");
                         System.Threading.Thread.Sleep(5000);
                         Environment.Exit(-1);
                     }
