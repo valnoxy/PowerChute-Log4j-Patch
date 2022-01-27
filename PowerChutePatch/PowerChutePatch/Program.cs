@@ -124,7 +124,7 @@ namespace PowerChutePatch
             {
                 if (sc.Status != ServiceControllerStatus.Stopped)
                 {
-                    // Stop the service if the current status is started.
+                    // Stop the service if the current status is started. 
                     Console.WriteLine($"[i] Stopping the {servicename} service ...");
                     try
                     {
